@@ -176,93 +176,11 @@
 
 </footer>
 
-<script src="script.js"></script>
 
-<script type="module">
+<script type="module" src="script.js"></script>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import {
-  getFirestore,
-  addDoc,
-  collection
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_BUCKET",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-window.register = async function(){
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  try{
-    await createUserWithEmailAndPassword(auth, email, password);
-    alert("Account created successfully!");
-  }
-  catch(error){
-    alert(error.message);
-  }
-}
-
-window.login = async function(){
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  try{
-    await signInWithEmailAndPassword(auth, email, password);
-    alert("Login success!");
-  }
-  catch(error){
-    alert(error.message);
-  }
-}
-
-window.logout = async function(){
-  await signOut(auth);
-  alert("Logged out");
-}
-
-window.uploadArticle = async function(){
-
-  const title = document.getElementById("title").value;
-  const content = document.getElementById("content").value;
-
-  try{
-
-    await addDoc(collection(db, "articles"), {
-      title,
-      content,
-      createdAt: new Date()
-    });
-
-    alert("Article uploaded!");
-
-  }
-  catch(error){
-    alert(error.message);
-  }
-}
-
-</script>
 
 </body>
 </html>
