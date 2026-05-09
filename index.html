@@ -1,3 +1,8 @@
+# NOVASPORT — Full Modern Website System
+
+## index.html
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,48 +12,26 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
-<footer>
-
-  <h2>NOVASPORT</h2>
-
-  <p>
-    The Future of Sports
-  </p>
-
-  <div class="socials">
-    <a href="#">Instagram</a>
-    <a href="#">YouTube</a>
-    <a href="#">TikTok</a>
-  </div>
-
-  <p class="copy">
-    © 2026 NOVASPORT. All Rights Reserved.
-  </p>
-
-
 <body>
 
-  <header>
-    <h1>NOVASPORT</h1>
+<header>
+  <h1>NOVASPORT</h1>
 
-    <nav>
-  <a href="#">Home</a>
-  <a href="news.html">News</a>
-  <a href="#matches">Matches</a>
-  <a href="#">Players</a>
-</nav>
-  </header>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#news">News</a>
+    <a href="#matches">Matches</a>
+    <a href="#login">Login</a>
+  </nav>
+</header>
 
-  <div class="breaking-news">
-
+<div class="breaking-news">
   <marquee>
     🚨 BREAKING NEWS: Real Madrid signs new superstar • NBA Finals tonight • Formula 1 race starts this weekend • Champions League updates live
   </marquee>
-
 </div>
-  <section class="hero">
 
- <section class="hero">
+<section class="hero">
 
   <div class="hero-text">
 
@@ -59,22 +42,17 @@
     </p>
 
     <a href="#news">
-  <button>
-    Explore Now
-  </button>
-</a>
-      
-    
+      <button>Explore Now</button>
+    </a>
 
   </div>
 
   <div class="hero-image">
-
-    <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc" alt="sports">
-
+    <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc">
   </div>
 
 </section>
+
 <section class="news" id="news">
 
   <h2>Latest News</h2>
@@ -82,19 +60,19 @@
   <div class="news-container">
 
     <div class="card">
-      <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018" alt="">
+      <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018">
       <h3>Football</h3>
       <p>Latest football match highlights.</p>
     </div>
 
     <div class="card">
-      <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc" alt="">
+      <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc">
       <h3>Basketball</h3>
       <p>NBA finals and player news.</p>
     </div>
 
     <div class="card">
-      <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211" alt="">
+      <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211">
       <h3>Racing</h3>
       <p>Formula 1 championship updates.</p>
     </div>
@@ -102,6 +80,7 @@
   </div>
 
 </section>
+
 <section class="news">
 
   <h2>Latest Sports Article</h2>
@@ -118,9 +97,6 @@
         The 2026 basketball championship delivered an
         incredible performance as the home team secured
         victory in the final seconds of the game.
-        Thousands of fans celebrated the dramatic win
-        after an intense match filled with fast attacks,
-        powerful dunks, and unforgettable moments.
       </p>
 
     </div>
@@ -128,7 +104,8 @@
   </div>
 
 </section>
-    <section class="matches" id="matches">
+
+<section class="matches" id="matches">
 
   <h2>Live Matches</h2>
 
@@ -150,6 +127,142 @@
   </div>
 
 </section>
+
+<section class="login-section" id="login">
+
+  <h2>User Login</h2>
+
+  <input type="email" id="email" placeholder="Email">
+
+  <input type="password" id="password" placeholder="Password">
+
+  <button onclick="register()">Register</button>
+
+  <button onclick="login()">Login</button>
+
+  <button onclick="logout()">Logout</button>
+
+</section>
+
+<section class="upload-section">
+
+  <h2>Upload Article</h2>
+
+  <input type="text" id="title" placeholder="Article Title">
+
+  <textarea id="content" placeholder="Write article..."></textarea>
+
+  <button onclick="uploadArticle()">
+    Upload Article
+  </button>
+
+</section>
+
+<footer>
+
+  <h2>NOVASPORT</h2>
+
+  <p>The Future of Sports</p>
+
+  <div class="socials">
+    <a href="#">Instagram</a>
+    <a href="#">YouTube</a>
+    <a href="#">TikTok</a>
+  </div>
+
+  <p class="copy">
+    © 2026 NOVASPORT. All Rights Reserved.
+  </p>
+
+</footer>
+
 <script src="script.js"></script>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  getFirestore,
+  addDoc,
+  collection
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_BUCKET",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.register = async function(){
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try{
+    await createUserWithEmailAndPassword(auth, email, password);
+    alert("Account created successfully!");
+  }
+  catch(error){
+    alert(error.message);
+  }
+}
+
+window.login = async function(){
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try{
+    await signInWithEmailAndPassword(auth, email, password);
+    alert("Login success!");
+  }
+  catch(error){
+    alert(error.message);
+  }
+}
+
+window.logout = async function(){
+  await signOut(auth);
+  alert("Logged out");
+}
+
+window.uploadArticle = async function(){
+
+  const title = document.getElementById("title").value;
+  const content = document.getElementById("content").value;
+
+  try{
+
+    await addDoc(collection(db, "articles"), {
+      title,
+      content,
+      createdAt: new Date()
+    });
+
+    alert("Article uploaded!");
+
+  }
+  catch(error){
+    alert(error.message);
+  }
+}
+
+</script>
+
 </body>
 </html>
