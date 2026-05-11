@@ -1,13 +1,16 @@
-window.addEventListener("scroll", function(){
-
+// =======================
+// SCROLL HEADER EFFECT
+// =======================
+window.addEventListener("scroll", function () {
   const header = document.querySelector("header");
-
-  header.classList.toggle("active", window.scrollY > 50);
-
+  if (header) {
+    header.classList.toggle("active", window.scrollY > 50);
+  }
 });
 
-/* FIREBASE */
-
+// =======================
+// FIREBASE IMPORT (MODULE)
+// =======================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
@@ -23,8 +26,9 @@ import {
   collection
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* FIREBASE CONFIG */
-
+// =======================
+// FIREBASE CONFIG
+// =======================
 const firebaseConfig = {
   apiKey: "AIzaSyCwHTrXhyShGF4pde5rZdQvSRnqVTH4evw",
   authDomain: "novasport-8b7b2.firebaseapp.com",
@@ -35,110 +39,89 @@ const firebaseConfig = {
   measurementId: "G-JHW2WF1XHD"
 };
 
-/* INITIALIZE */
-
+// =======================
+// INITIALIZE FIREBASE
+// =======================
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
-
 const db = getFirestore(app);
 
-/* REGISTER */
+// =======================
+// REGISTER
+// =======================
+window.register = async function () {
+  const email = document.getElementById("email")?.value;
+  const password = document.getElementById("password")?.value;
 
-window.register = async function(){
-
-  const email = document.getElementById("email").value;
-
-  const password = document.getElementById("password").value;
-
-  try{
-
-    await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-    alert("Account created successfully!");
-
+  if (!email || !password) {
+    alert("Email dan password wajib diisi!");
+    return;
   }
 
-  catch(error){
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    alert("✅ Account created successfully!");
 
-    alert(error.message);
+  } catch (error) {
+    alert("❌ " + error.message);
+  }
+};
 
+// =======================
+// LOGIN
+// =======================
+window.login = async function () {
+  const email = document.getElementById("email")?.value;
+  const password = document.getElementById("password")?.value;
+
+  if (!email || !password) {
+    alert("Email dan password wajib diisi!");
+    return;
   }
 
-}
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    alert("🔥 Login successful!");
 
-/* LOGIN */
+  } catch (error) {
+    alert("❌ " + error.message);
+  }
+};
 
-window.login = async function(){
+// =======================
+// LOGOUT
+// =======================
+window.logout = async function () {
+  try {
+    await signOut(auth);
+    alert("👋 Logged out!");
+  } catch (error) {
+    alert("❌ " + error.message);
+  }
+};
 
-  const email = document.getElementById("email").value;
+// =======================
+// UPLOAD ARTICLE
+// =======================
+window.uploadArticle = async function () {
+  const title = document.getElementById("title")?.value;
+  const content = document.getElementById("content")?.value;
 
-  const password = document.getElementById("password").value;
-
-  try{
-
-    await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-    alert("Login successful!");
-
+  if (!title || !content) {
+    alert("Judul dan konten wajib diisi!");
+    return;
   }
 
-  catch(error){
-
-    alert(error.message);
-
-  }
-
-}
-
-/* LOGOUT */
-
-window.logout = async function(){
-
-  await signOut(auth);
-
-  alert("Logged out!");
-
-}
-
-/* UPLOAD ARTICLE */
-
-window.uploadArticle = async function(){
-
-  const title =
-    document.getElementById("title").value;
-
-  const content =
-    document.getElementById("content").value;
-
-  try{
-
+  try {
     await addDoc(collection(db, "articles"), {
-
       title: title,
-
       content: content,
-
       createdAt: new Date()
-
     });
 
-    alert("Article uploaded successfully!");
+    alert("🚀 Article uploaded!");
 
+  } catch (error) {
+    alert("❌ " + error.message);
   }
-
-  catch(error){
-
-    alert(error.message);
-
-  }
-
-}
+};
